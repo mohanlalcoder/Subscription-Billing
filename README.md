@@ -37,7 +37,7 @@ Ensure the following are installed:
 ### 1. Clone or open the project
 
 ```bash
-git clone <your-repository-url>
+git clone git clone https://github.com/mohanlalcoder/Subscription-Billing.git
 cd subscription-billing
 ```
 
