@@ -38,7 +38,7 @@ Ensure the following are installed:
 
 ```bash
 git clone git clone https://github.com/mohanlalcoder/Subscription-Billing.git
-cd subscription-billing
+cd Subscription-Billing
 ```
 
 If the project already exists locally, open its directory instead.
@@ -127,6 +127,33 @@ Plan names can be restricted to unique values within each merchant.
 ### Subscriptions and Billing Periods
 
 A subscription connects a customer to a plan. Billing periods track the dates, included usage, base pricing, overage rate, and total billing amount for a subscription cycle.
+
+Queue Start Command:
+
+You now have two background processes for local development:
+Terminal 1 (Checks for billing periods that are due):
+php artisan schedule:work
+
+Terminal 2 (Runs queued jobs)
+php artisan queue:work --tries=3 --timeout=120
+
+For a local development test only, you can run:
+php artisan billing:process-due-cycles --force
+
+The --force option includes unfinished periods, so it can create a test invoice before the real billing period ends. Do not use it in production.
+The command should report a queued billing cycle. Your running queue worker should then process:
+AggregateUsageJob
+       |
+       v
+GenerateInvoiceJob
+       |
+       v
+Invoice saved to database
+
+Because the job chain waits for aggregation to finish, invoice generation won't run if aggregation fails.
+
+Expired test command manually:
+php artisan subscriptions:expire
 
 ### Usage Events
 
