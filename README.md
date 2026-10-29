@@ -140,17 +140,7 @@ php artisan queue:work --tries=3 --timeout=120
 For a local development test only, you can run:
 php artisan billing:process-due-cycles --force
 
-The --force option includes unfinished periods, so it can create a test invoice before the real billing period ends. Do not use it in production.
-The command should report a queued billing cycle. Your running queue worker should then process:
-AggregateUsageJob
-       |
-       v
-GenerateInvoiceJob
-       |
-       v
-Invoice saved to database
-
-Because the job chain waits for aggregation to finish, invoice generation won't run if aggregation fails.
+The --force option includes unfinished periods, so it can create a test invoice before the real billing period ends.
 
 Expired test command manually:
 php artisan subscriptions:expire
